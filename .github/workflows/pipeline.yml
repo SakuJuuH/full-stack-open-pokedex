@@ -45,7 +45,7 @@ jobs:
               run: flyctl deploy --remote-only
               env:
                   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-                  
+
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
               with:
@@ -75,7 +75,7 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Bump version and push tag
-              uses: anothrNick/github-tag-action@e528bc2
+              uses: anothrNick/github-tag-action@e528bc2b9628971ce0e6f823f3052d1dcd9d512c
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   DEFAULT_BUMP: "patch"
