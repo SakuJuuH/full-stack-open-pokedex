@@ -7,10 +7,13 @@ const PORT = process.env.PORT || 3000
 app.use(express.static('dist'))
 
 app.get('/health', (req, res) => {
-  console.log('Health check received')
-  res.status(200).send('ok')
+  res.status(200).json({ status: 'ok', message: 'Health check passed' })
 })
 
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`)
 })
+
+setTimeout(() => {
+  throw new Error('Delayed crash for testing')
+}, 30000)
