@@ -1,40 +1,22 @@
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
 
 // get the port from env variable
-const PORT = process.env.PORT || 3000;
-let healthCheckShouldFail = false;
+const PORT = process.env.PORT || 3000
 
-app.use(express.static("dist"));
+app.use(express.static('dist'))
 
-app.get("/health", (req, res) => {
-	if (healthCheckShouldFail) {
-		res.status(500).json({
-			status: "error",
-			message: "Health check failed",
-		});
-	}
-	res.status(200).json({ status: "ok", message: "Health check passed" });
-});
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Health check passed' })
+})
 
-app.get("/failed-health", (req, res) => {
-	healthCheckShouldFail = true;
-	res.status(500).json({
-		status: "error",
-		message: "Simulated health check failure",
-	});
-});
-
-app.get("/simulate-failure", (req, res) => {
-	healthCheckShouldFail = true;
-	res.json({ message: "Health checks will now fail" });
-});
-
-app.get("/simulate-recovery", (req, res) => {
-	healthCheckShouldFail = false;
-	res.json({ message: "Health checks will now pass" });
-});
+app.get('/failed-health', (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Simulated health check failure',
+  })
+})
 
 app.listen(PORT, () => {
-	console.log(`server started on port ${PORT}`);
-});
+  console.log(`server started on port ${PORT}`)
+})
