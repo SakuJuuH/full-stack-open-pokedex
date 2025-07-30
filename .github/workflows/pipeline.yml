@@ -37,7 +37,7 @@ jobs:
               run: npx playwright install --with-deps
             - name: Run e2e tests
               run: npm run test:e2e
-            - name: Deploy App
+            - name: Set up Fly Deployment
               if: ${{ github.event_name == 'push' && env.SKIP_DEPLOY != 'true' }}
               uses: superfly/flyctl-actions/setup-flyctl@master
             - name: Deploy to Fly.io
