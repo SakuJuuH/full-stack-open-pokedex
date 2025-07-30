@@ -17,11 +17,16 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Health check passed' })
 })
 
+app.get('/simulate-failure', (req, res) => {
+  healthCheckShouldFail = true
+  res.json({ message: 'Health checks will now fail' })
+})
+
+app.get('/simulate-recovery', (req, res) => {
+  healthCheckShouldFail = false
+  res.json({ message: 'Health checks will now pass' })
+})
+
 app.listen(PORT, () => {
   console.log(`server started on port ${PORT}`)
 })
-
-setTimeout(() => {
-  healthCheckShouldFail = true
-  throw new Error('Simulated health check failure')
-}, 5 * 60 * 1000)
