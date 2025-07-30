@@ -23,5 +23,5 @@ app.listen(PORT, () => {
 
 setTimeout(() => {
   healthCheckShouldFail = true
-  console.log('Health check will now fail')
+  throw new Error('Simulated health check failure')
 }, 5 * 60 * 1000)
