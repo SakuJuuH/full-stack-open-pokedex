@@ -1,5 +1,4 @@
 name: Deployment pipeline
-
 on:
     push:
         branches:
@@ -7,7 +6,6 @@ on:
     pull_request:
         branches: [main]
         types: [opened, synchronize]
-
 env:
     SKIP_DEPLOY: ${{ contains(join(github.event.commits.*.message, ' '), '#skip') }}
 jobs:
@@ -20,39 +18,30 @@ jobs:
                   node-version: "20"
             - name: Install dependencies
               run: npm install
-
             - name: Lint code
               run: npm run eslint
-
             - name: Build project
               run: npm run build
-
             - name: Run tests
               run: npm test
-
             - name: Install Playwright Browsers
               run: npx playwright install --with-deps
-
             - name: Run e2e tests
               run: npm run test:e2e
-
             - name: Deploy App
               if: ${{ github.event_name == 'push' && env.SKIP_DEPLOY != 'true' }}
               uses: superfly/flyctl-actions/setup-flyctl@master
-
             - name: Deploy to Fly.io
               if: ${{ github.event_name == 'push' && env.SKIP_DEPLOY != 'true' }}
               run: flyctl deploy --remote-only
               env:
                   FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() }}
               with:
                   name: playwright-report
                   path: playwright-report/
                   retention-days: 7
-
             - name: Discord Notify
               if: ${{ !cancelled() && github.event_name == 'push' && env.SKIP_DEPLOY != 'true' }}
               uses: sarisia/actions-status-discord@v1
@@ -65,7 +54,6 @@ jobs:
                   username: GitHub Actions
                   avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
                   color: ${{ job.status == 'success' && '3066993' || job.status == 'failure' && '15158332' || '000000' }}
-
     tag_release:
         needs: [simple_deployment_pipeline]
         runs-on: ubuntu-latest
